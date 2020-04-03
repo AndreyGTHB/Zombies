@@ -14,7 +14,7 @@ clock = pygame.time.Clock()
 
 
 # sprites
-player = Player(PLAYER_IMG)
+player = Player(PLAYER_IMG, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
 
 # groups
 all_objects = pygame.sprite.Group(player)
@@ -22,16 +22,13 @@ all_objects = pygame.sprite.Group(player)
 
 # main loop
 over = False
-frame = 0
 while not over:
-    frame += 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             over = True
             sys.exit(0)
 
-    print(f"ticking {frame}")
-    screen.fill(BLUE)
+    screen.fill(WHITE)
 
     all_objects.update()
     all_objects.draw(screen)
