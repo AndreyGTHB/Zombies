@@ -3,7 +3,12 @@ import math
 from settings import *
 
 
-class Player(pygame.sprite.Sprite):
+class Interacted:
+    def rotate_to(self, x, y):
+        raise NotImplementedError("Method 'rotate_to' of interface 'Interacted' must be override.")
+
+
+class Player(pygame.sprite.Sprite, Interacted):
     speed = PLAYER_SPEED
     shoot_interval = PLAYER_SHOOT_INTERVAL
 
@@ -67,7 +72,6 @@ class Player(pygame.sprite.Sprite):
 
 
 
-
 class Bullet(pygame.sprite.Sprite):
     speed = BULLET_SPEED
 
@@ -96,4 +100,55 @@ class Bullet(pygame.sprite.Sprite):
         self.x += self.speed_x
         self.y += self.speed_y
         self.rect.center = (self.x, self.y)
+
+
+
+
+class Zombie(pygame.sprite.Sprite, Interacted):
+    speed = ZOMBIE_SPEED
+
+    def __init__(self, img, player, bullets):
+        super(Zombie, self).__init__()
+
+        self.original_image = pygame.image.load(img).convert_alpha()
+        self.image = self.original_image.copy()
+        self.rect = self.image.get_rect()
+
+        self.player = player
+        self.bullets = bullets
+
+        self.direction = 90
+        self.x, self.y = 0, 0
+
+        self.DX, self.DY = self.player.x - self.x, self.player.y - self.y
+        self.VL = math.sqrt(self.DX ** 2 + self.DY ** 2)
+        self.VNX, self.VNY = self.DX / self.VL, self.DY / self.VL
+        self.speed_x, self.speed_y = self.VNX * self.speed, self.VNY * self.speed
+
+    def update(self):
+        self.rotate_to(self.player.x, self.player.y)
+        self.update_speed()
+        self.move()
+
+        if pygame.sprite.spritecollideany(self, self.bullets):
+            self.kill()
+
+    def rotate_to(self, x, y):
+        rel_x, rel_y = x - self.x, y - self.y
+        angle = 180 / math.pi * -math.atan2(rel_y, rel_x)
+        self.direction = angle - 90
+        self.image = pygame.transform.rotate(self.original_image, int(angle))
+        self.rect = self.image.get_rect(center=self.rect.center)
+
+    def update_speed(self):
+        DX, DY = self.player.x - self.x, self.player.y - self.y
+        VL = math.sqrt(DX ** 2 + DY ** 2)
+        VNX, VNY = DX / VL, DY / VL
+        self.speed_x, self.speed_y = VNX * self.speed, VNY * self.speed
+
+    def move(self):
+        self.x += self.speed_x
+        self.y += self.speed_y
+        self.rect.center = (self.x, self.y)
+
 
