@@ -10,8 +10,10 @@ BLUE = (0, 0, 255)
 
 # imagines
 PLAYER_IMG = "../resources/player.png"
+BULLET_IMG = "../resources/bullet.png"
 
-# player
+# constants
 PLAYER_SPEED = 4
+BULLET_SPEED = 5
 
 

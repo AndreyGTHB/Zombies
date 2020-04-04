@@ -13,11 +13,12 @@ screen = pygame.display.set_mode(SCREEN_SIZE)
 clock = pygame.time.Clock()
 
 
-# sprites
+# objects
 player = Player(PLAYER_IMG, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
 
 # groups
-all_sprites = pygame.sprite.Group(player)
+sprites = pygame.sprite.Group(player)
+bullets = pygame.sprite.Group(Bullet(BULLET_IMG, player))
 
 
 # main loop
@@ -27,11 +28,16 @@ while not over:
         if event.type == pygame.QUIT:
             over = True
             sys.exit()
+    clicks = pygame.mouse.get_pressed()
+    if clicks[0]:
+        bullets.add(Bullet(BULLET_IMG, player))
 
     screen.fill(WHITE)
 
-    all_sprites.update()
-    all_sprites.draw(screen)
+    sprites.update()
+    bullets.update()
+    sprites.draw(screen)
+    bullets.draw(screen)
 
     pygame.display.update()
     clock.tick(FPS)
