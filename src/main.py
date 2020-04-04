@@ -27,11 +27,14 @@ zombies.add(Zombie(ZOMBIE_IMG, player, bullets))
 pygame.time.set_timer(pygame.USEREVENT, 2000)
 
 
-def check_collision(group1, group2, dokill=False) -> bool:
-    for sprite in group1:
-        pygame.sprite.spritecollide(sprite, group2, dokill=dokill)
-        return True
-    return False
+def check_bul_collision(group1, group2):
+    for sprite1 in group1:
+        for sprite2 in group2:
+            grouped = pygame.sprite.Group(sprite2)
+            if pygame.sprite.spritecollideany(sprite1, grouped):
+                sprite1.kill()
+                sprite2.kill()
+                break
 
 
 # main loop
@@ -46,7 +49,7 @@ while not over:
 
     screen.fill(WHITE)
 
-    check_collision(bullets, zombies, True)
+    check_bul_collision(bullets, zombies)
 
     sprites.update()
     bullets.update()

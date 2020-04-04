@@ -80,7 +80,7 @@ class Bullet(pygame.sprite.Sprite):
 
         self.x, self.y = player.x, player.y
 
-        self.image = pygame.transform.rotate(pygame.image.load(img), 90 - player.direction)
+        self.image = pygame.image.load(img).convert_alpha()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
@@ -129,9 +129,6 @@ class Zombie(pygame.sprite.Sprite, Interacted):
         self.rotate_to(self.player.x, self.player.y)
         self.update_speed()
         self.move()
-
-        if pygame.sprite.spritecollideany(self, self.bullets):
-            self.kill()
 
     def rotate_to(self, x, y):
         rel_x, rel_y = x - self.x, y - self.y
