@@ -14,6 +14,7 @@ BULLET_IMG = "../resources/bullet.png"
 
 # constants
 PLAYER_SPEED = 4
+PLAYER_SHOOT_INTERVAL = 400
 BULLET_SPEED = 5
 
 

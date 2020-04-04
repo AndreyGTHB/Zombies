@@ -13,12 +13,13 @@ screen = pygame.display.set_mode(SCREEN_SIZE)
 clock = pygame.time.Clock()
 
 
-# objects
-player = Player(PLAYER_IMG, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
-
 # groups
-sprites = pygame.sprite.Group(player)
-bullets = pygame.sprite.Group(Bullet(BULLET_IMG, player))
+sprites = pygame.sprite.Group()
+bullets = pygame.sprite.Group()
+
+# objects
+player = Player(PLAYER_IMG, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2), bullets, clock)
+player.add(sprites)
 
 
 # main loop
@@ -28,9 +29,6 @@ while not over:
         if event.type == pygame.QUIT:
             over = True
             sys.exit()
-    clicks = pygame.mouse.get_pressed()
-    if clicks[0]:
-        bullets.add(Bullet(BULLET_IMG, player))
 
     screen.fill(WHITE)
 

@@ -5,8 +5,9 @@ from settings import *
 
 class Player(pygame.sprite.Sprite):
     speed = PLAYER_SPEED
+    shoot_interval = PLAYER_SHOOT_INTERVAL
 
-    def __init__(self, img, position):
+    def __init__(self, img, position, bullets, clock):
         super(Player, self).__init__()
 
         self.center = position
@@ -20,6 +21,10 @@ class Player(pygame.sprite.Sprite):
         self.speed_x = 0
         self.speed_y = 0
 
+        self.bullets = bullets
+        self.time_to_shoot = self.shoot_interval
+        self.clock = clock
+
     def update(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] and not self.rect.top <= 0:
@@ -30,6 +35,7 @@ class Player(pygame.sprite.Sprite):
             self.speed_x += self.speed
         if keys[pygame.K_a] and not self.rect.left <= 0:
             self.speed_x -= self.speed
+        self.shooting()
 
         self.rotate_to_mouse_pointer()
         self.x += self.speed_x
@@ -50,6 +56,17 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.original_image, int(angle))
         print(self.direction)
         self.rect = self.image.get_rect(center=self.rect.center)
+
+    def shooting(self):
+        clicks = pygame.mouse.get_pressed()
+        if self.time_to_shoot > 0:
+            self.time_to_shoot -= self.clock.get_time()
+        elif clicks[0]:
+            Bullet(BULLET_IMG, self).add(self.bullets)
+            self.time_to_shoot = self.shoot_interval
+
+
+
 
 
 class Bullet(pygame.sprite.Sprite):
