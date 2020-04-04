@@ -9,6 +9,9 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 # imagines
-PLAYER_IMG = "../resources/gg_03.png"
+PLAYER_IMG = "../resources/player.png"
+
+# player
+PLAYER_SPEED = 4
 
 

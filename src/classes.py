@@ -4,7 +4,7 @@ from settings import *
 
 
 class Player(pygame.sprite.Sprite):
-    speed = 5
+    speed = PLAYER_SPEED
 
     def __init__(self, img, position):
         super(Player, self).__init__()
@@ -40,8 +40,11 @@ class Player(pygame.sprite.Sprite):
 
     def rotate_to_mouse_pointer(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        rel_x, rel_y = mouse_x - self.x, mouse_y - self.y
-        angle = 180/math.pi * -math.atan2(rel_y, rel_x)
+        self.rotate_to(mouse_x, mouse_y)
+
+    def rotate_to(self, x, y):
+        rel_x, rel_y = x - self.x, y - self.y
+        angle = 180 / math.pi * -math.atan2(rel_y, rel_x)
         self.image = pygame.transform.rotate(self.original_image, int(angle))
         self.rect = self.image.get_rect(center=self.rect.center)
 
