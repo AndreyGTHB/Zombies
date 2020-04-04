@@ -54,7 +54,6 @@ class Player(pygame.sprite.Sprite):
         angle = 180 / math.pi * -math.atan2(rel_y, rel_x)
         self.direction = angle - 90
         self.image = pygame.transform.rotate(self.original_image, int(angle))
-        print(self.direction)
         self.rect = self.image.get_rect(center=self.rect.center)
 
     def shooting(self):
@@ -77,7 +76,8 @@ class Bullet(pygame.sprite.Sprite):
 
         self.x, self.y = player.x, player.y
 
-        self.image = pygame.image.load(img)
+        self.image = pygame.transform.rotate(pygame.image.load(img), 90 - player.direction)
+        self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
         self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
@@ -93,7 +93,7 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
     def move(self):
-        self.rect.move_ip(self.speed_x, self.speed_y)
         self.x += self.speed_x
         self.y += self.speed_y
+        self.rect.center = (self.x, self.y)
 
