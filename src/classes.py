@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite, Interacted):
     speed = PLAYER_SPEED
     shoot_interval = PLAYER_SHOOT_INTERVAL
 
-    def __init__(self, img, position, bullets, clock):
+    def __init__(self, img, position, all_sprites,  bullets, clock):
         super(Player, self).__init__()
 
         self.center = position
@@ -27,6 +27,8 @@ class Player(pygame.sprite.Sprite, Interacted):
         self.speed_y = 0
 
         self.bullets = bullets
+        self.all_sprites = all_sprites
+
         self.time_to_shoot = self.shoot_interval
         self.clock = clock
 
@@ -66,7 +68,7 @@ class Player(pygame.sprite.Sprite, Interacted):
         if self.time_to_shoot > 0:
             self.time_to_shoot -= self.clock.get_time()
         elif clicks[0]:
-            Bullet(BULLET_IMG, self).add(self.bullets)
+            Bullet(BULLET_IMG, self).add(self.all_sprites, self.bullets)
             self.time_to_shoot = self.shoot_interval
 
 

@@ -14,20 +14,19 @@ clock = pygame.time.Clock()
 
 
 # groups
-sprites = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 zombies = pygame.sprite.Group()
 
 # objects
-player = Player(PLAYER_IMG, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2), bullets, clock)
-player.add(sprites)
-zombies.add(Zombie(ZOMBIE_IMG, player, bullets))
+player = Player(PLAYER_IMG, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2), bullets, all_sprites, clock)
+player.add(all_sprites)
 
 
 pygame.time.set_timer(pygame.USEREVENT, 2000)
 
 
-def check_bul_collision(group1, group2):
+def check_bullet_collision(group1, group2):
     for sprite1 in group1:
         for sprite2 in group2:
             grouped = pygame.sprite.Group(sprite2)
@@ -45,19 +44,14 @@ while not over:
             over = True
             sys.exit()
         elif event.type == pygame.USEREVENT:
-            zombies.add(Zombie(ZOMBIE_IMG, player, bullets))
+            Zombie(ZOMBIE_IMG, player, bullets).add(all_sprites, zombies)
 
     screen.fill(WHITE)
 
-    check_bul_collision(bullets, zombies)
+    check_bullet_collision(bullets, zombies)
 
-    sprites.update()
-    bullets.update()
-    zombies.update()
-
-    sprites.draw(screen)
-    bullets.draw(screen)
-    zombies.draw(screen)
+    all_sprites.update()
+    all_sprites.draw(screen)
 
     pygame.display.update()
     clock.tick(FPS)
