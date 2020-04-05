@@ -12,13 +12,15 @@ BLUE = (0, 0, 255)
 PLAYER_IMG = "../resources/player.png"
 BULLET_IMG = "../resources/bullet.png"
 ZOMBIE_IMG = "../resources/zomb.png"
+SHIP_IMG = "../resources/ev_ship.png"
 
 # constants
 PLAYER_SHOOT_INTERVAL = 450
 
 PLAYER_SPEED = 4
-BULLET_SPEED = 9
+BULLET_SPEED = 14
 ZOMBIE_SPEED = 4
+SHIP_SPEED = 8
 
 NEXT_LEVEL = 10
 

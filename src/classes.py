@@ -164,8 +164,10 @@ class Zombie(pygame.sprite.Sprite, Interacted):
 
 
 
-class TextObject():
+class TextObject(pygame.sprite.Sprite):
     def __init__(self, text, font=None, size=30, smoothing=0, colour=BLACK):
+        pygame.sprite.Sprite.__init__(self)
+
         self.font = pygame.font.SysFont(font, size)
         self.image = self.font.render(text, smoothing, colour)
         self.rect = self.image.get_rect()
@@ -175,9 +177,8 @@ class TextObject():
         screen.blit(self.image, self.rect)
 
 
-class EvacuationText(TextObject, pygame.sprite.Sprite):
+class EvacuationText(TextObject):
     def __init__(self, font, size, clock, time):
-        pygame.sprite.Sprite.__init__(self)
         TextObject.__init__(self, f"Evacuation through: {time}", font, size, 1, RED)
 
         self.time = time
@@ -188,6 +189,52 @@ class EvacuationText(TextObject, pygame.sprite.Sprite):
         self.image = self.font.render(f"Evacuation through: {self.time//1000}", 1, RED)
         self.rect = self.image.get_rect(center=(350, 45))
 
+
+class EvacuationShip(pygame.sprite.Sprite, Interacted):
+    speed = SHIP_SPEED
+
+    def __init__(self, img, player, all_sprites):
+        super(EvacuationShip, self).__init__(all_sprites)
+
+        self.original_image = pygame.image.load(img)
+        self.image = self.original_image.copy()
+        self.rect = self.image.get_rect()
+
+        self.player = player
+
+        self.speed_x = 0
+        self.speed_y = 0
+        self.update_speed()
+
+    def update(self):
+        self.rotate_to(self.player.x, self.player.y)
+        self.update_speed()
+        self.move()
+
+    def move(self):
+        self.rect.centerx += self.speed_x
+        self.rect.centery += self.speed_y
+
+    def update_speed(self):
+        DX, DY = self.player.x - self.rect.centerx, self.player.y - self.rect.centery
+        VL = math.sqrt(DX ** 2 + DY ** 2)
+        try:
+            VNX, VNY = DX / VL, DY / VL
+        except ZeroDivisionError:
+            return
+        self.speed_x, self.speed_y = VNX * self.speed, VNY * self.speed
+
+    def rotate_to(self, x, y):
+        rel_x, rel_y = x - self.rect.centerx, y - self.rect.centery
+        angle = 180 / math.pi * -math.atan2(rel_y, rel_x)
+        self.image = pygame.transform.rotate(self.original_image, int(angle) - 90)
+        self.rect = self.image.get_rect(center=self.rect.center)
+
+    def check_collision(self):
+        grouped = pygame.sprite.Group(self)
+        if pygame.sprite.spritecollideany(self.player, grouped):
+            return True
+        return False
 
 
 

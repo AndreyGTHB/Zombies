@@ -21,7 +21,11 @@ zombies = pygame.sprite.Group()
 # objects
 player = Player(PLAYER_IMG, (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), bullets, all_sprites, clock)
 player.add(all_sprites)
-EvacuationText(None, 46, clock, 35000).add(all_sprites)
+evt = EvacuationText(None, 46, clock, 35000)
+evt.add(all_sprites)
+evsh = None
+
+evacuation = False
 
 
 num_of_zombies = 0
@@ -46,11 +50,10 @@ def decrement_spawning_time():
 
     if zombie_spawning_time > 0.5:
         zombie_spawning_time -= 0.5
-    elif zombie_spawning_time > 0.1:
+    elif zombie_spawning_time > 0.4:
         Zombie.speed = 3
         zombie_spawning_time -= 0.1
     else:
-        Zombie.speed = 1
         return
 
     decrement_spawning_timer = Timer(NEXT_LEVEL, decrement_spawning_time)
@@ -77,6 +80,18 @@ while not over:
             sys.exit()
 
     screen.fill(WHITE)
+
+    if evt.time <= 0 and not evacuation:
+        evsh = EvacuationShip(SHIP_IMG, player, all_sprites)
+        evacuation = True
+    elif evacuation:
+        collided = evsh.check_collision()
+        if collided:
+            player.kill()
+            for sprite in all_sprites:
+                sprite.kill()
+            win = TextObject("You escaped!!", None, 100, 1, GREEN)
+            win.draw(screen, (SCREEN_WIDTH/2 - 60, SCREEN_HEIGHT/2 + 50))
 
     check_collision(bullets, zombies)
 
