@@ -46,8 +46,10 @@ def decrement_spawning_time():
     if zombie_spawning_time > 0.5:
         zombie_spawning_time -= 0.5
     elif zombie_spawning_time > 0.1:
+        Zombie.speed = 3
         zombie_spawning_time -= 0.1
     else:
+        Zombie.speed = 1
         return
 
     decrement_spawning_time_timer = Timer(NEXT_LEVEL, decrement_spawning_time)
@@ -70,6 +72,7 @@ while not over:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             zombie_timer.cancel()
+            decrement_spawning_time_timer.cancel()
             sys.exit()
 
     screen.fill(WHITE)
