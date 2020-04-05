@@ -26,7 +26,7 @@ player.add(all_sprites)
 num_of_zombies = 0
 zombie_spawning_time = 2.5
 zombie_timer = None
-decrement_spawning_time_timer = None
+decrement_spawning_timer = None
 
 
 def check_collision(group1, group2):
@@ -41,7 +41,7 @@ def check_collision(group1, group2):
 
 def decrement_spawning_time():
     global zombie_spawning_time
-    global decrement_spawning_time_timer
+    global decrement_spawning_timer
 
     if zombie_spawning_time > 0.5:
         zombie_spawning_time -= 0.5
@@ -52,8 +52,8 @@ def decrement_spawning_time():
         Zombie.speed = 1
         return
 
-    decrement_spawning_time_timer = Timer(NEXT_LEVEL, decrement_spawning_time)
-    decrement_spawning_time_timer.start()
+    decrement_spawning_timer = Timer(NEXT_LEVEL, decrement_spawning_time)
+    decrement_spawning_timer.start()
 
 
 def spawn_zombie():
@@ -72,7 +72,7 @@ while not over:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             zombie_timer.cancel()
-            decrement_spawning_time_timer.cancel()
+            decrement_spawning_timer.cancel()
             sys.exit()
 
     screen.fill(WHITE)

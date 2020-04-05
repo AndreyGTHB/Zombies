@@ -14,13 +14,14 @@ BULLET_IMG = "../resources/bullet.png"
 ZOMBIE_IMG = "../resources/zomb.png"
 
 # constants
-PLAYER_SPEED = 4
 PLAYER_SHOOT_INTERVAL = 450
+
+PLAYER_SPEED = 4
 BULLET_SPEED = 9
 ZOMBIE_SPEED = 4
+
 NEXT_LEVEL = 10
 
-# events
 ZOMBIE_EVENT = 8
 
 

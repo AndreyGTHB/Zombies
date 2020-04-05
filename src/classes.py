@@ -1,3 +1,5 @@
+from random import randint
+
 import pygame
 import math
 from settings import *
@@ -114,13 +116,22 @@ class Zombie(pygame.sprite.Sprite, Interacted):
 
         self.original_image = pygame.image.load(img).convert_alpha()
         self.image = self.original_image.copy()
-        self.rect = self.image.get_rect()
+
+        chance = randint(1, 4)
+        if chance == 1:
+            self.rect = self.image.get_rect()
+        elif chance == 2:
+            self.rect = self.image.get_rect(center=(SCREEN_WIDTH, 0))
+        elif chance == 3:
+            self.rect = self.image.get_rect(center=(0, SCREEN_HEIGHT))
+        else:
+            self.rect = self.image.get_rect(center=(SCREEN_WIDTH, SCREEN_HEIGHT))
 
         self.player = player
         self.bullets = bullets
 
         self.direction = 90
-        self.x, self.y = 0, 0
+        self.x, self.y = self.rect.center
 
         self.DX, self.DY = self.player.x - self.x, self.player.y - self.y
         self.VL = math.sqrt(self.DX ** 2 + self.DY ** 2)
