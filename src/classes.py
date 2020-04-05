@@ -206,9 +206,12 @@ class EvacuationShip(pygame.sprite.Sprite, Interacted):
         self.speed_y = 0
         self.update_speed()
 
+        self.evac = False
+
     def update(self):
-        self.rotate_to(self.player.x, self.player.y)
-        self.update_speed()
+        if not self.evac:
+            self.rotate_to(self.player.x, self.player.y)
+            self.update_speed()
         self.move()
 
     def move(self):

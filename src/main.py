@@ -87,11 +87,13 @@ while not over:
     elif evacuation:
         collided = evsh.check_collision()
         if collided:
+            evsh.evac = True
             player.kill()
             for sprite in all_sprites:
-                sprite.kill()
+                if type(sprite) is not EvacuationShip:
+                    sprite.kill()
             win = TextObject("You escaped!!", None, 100, 1, GREEN)
-            win.draw(screen, (SCREEN_WIDTH/2 - 60, SCREEN_HEIGHT/2 + 50))
+            win.draw(screen, (SCREEN_WIDTH/2 - 30, SCREEN_HEIGHT/2 + 50))
 
     check_collision(bullets, zombies)
 
