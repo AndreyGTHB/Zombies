@@ -162,3 +162,32 @@ class Zombie(pygame.sprite.Sprite, Interacted):
         self.rect.center = (self.x, self.y)
 
 
+
+
+class TextObject():
+    def __init__(self, text, font=None, size=30, smoothing=0, colour=BLACK):
+        self.font = pygame.font.SysFont(font, size)
+        self.image = self.font.render(text, smoothing, colour)
+        self.rect = self.image.get_rect()
+
+    def draw(self, screen, position):
+        self.rect.center = position
+        screen.blit(self.image, self.rect)
+
+
+class EvacuationText(TextObject, pygame.sprite.Sprite):
+    def __init__(self, font, size, clock, time):
+        pygame.sprite.Sprite.__init__(self)
+        TextObject.__init__(self, f"Evacuation through: {time}", font, size, 1, RED)
+
+        self.time = time
+        self.clock = clock
+
+    def update(self):
+        self.time -= self.clock.get_time()
+        self.image = self.font.render(f"Evacuation through: {self.time//1000}", 1, RED)
+        self.rect = self.image.get_rect(center=(350, 45))
+
+
+
+

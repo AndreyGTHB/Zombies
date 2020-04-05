@@ -21,6 +21,7 @@ zombies = pygame.sprite.Group()
 # objects
 player = Player(PLAYER_IMG, (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), bullets, all_sprites, clock)
 player.add(all_sprites)
+EvacuationText(None, 46, clock, 35000).add(all_sprites)
 
 
 num_of_zombies = 0
