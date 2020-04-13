@@ -1,3 +1,5 @@
+from time import sleep
+
 import pygame
 import sys
 from threading import Timer
@@ -21,7 +23,7 @@ zombies = pygame.sprite.Group()
 # objects
 player = Player(PLAYER_IMG, (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), bullets, all_sprites, clock)
 player.add(all_sprites)
-evt = EvacuationText(None, 46, clock, 35000)
+evt = EvacuationText(None, 46, clock, GAME_TIME * 1000)
 evt.add(all_sprites)
 evsh = None
 
@@ -34,19 +36,26 @@ zombie_timer = None
 decrement_spawning_timer = None
 
 
-def check_collision(group1, group2):
+def check_collision(group1, group2, dokill=False):
+    answer = False
     for sprite1 in group1:
         for sprite2 in group2:
             grouped = pygame.sprite.Group(sprite2)
             if pygame.sprite.spritecollideany(sprite1, grouped):
-                sprite1.kill()
-                sprite2.kill()
+                if dokill:
+                    sprite1.kill()
+                    sprite2.kill()
+                answer = True
                 break
+    return answer
 
 
 def decrement_spawning_time():
     global zombie_spawning_time
     global decrement_spawning_timer
+
+    if over:
+        return
 
     if zombie_spawning_time > 0.5:
         zombie_spawning_time -= 0.5
@@ -72,7 +81,7 @@ def spawn_zombie():
 # main loop
 decrement_spawning_time()
 spawn_zombie()
-while not over:
+while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             zombie_timer.cancel()
@@ -81,7 +90,7 @@ while not over:
 
     screen.fill(WHITE)
 
-    if evt.time <= 0 and not evacuation:
+    if evt.time <= 0 and not evacuation and not over:
         evsh = EvacuationShip(SHIP_IMG, player, all_sprites)
         evacuation = True
     elif evacuation:
@@ -93,9 +102,19 @@ while not over:
                 if type(sprite) is not EvacuationShip:
                     sprite.kill()
             win = TextObject("You escaped!!", None, 100, 1, GREEN)
+            win.add(all_sprites)
             win.draw(screen, (SCREEN_WIDTH/2 - 30, SCREEN_HEIGHT/2 + 50))
+            over = True
 
-    check_collision(bullets, zombies)
+    check_collision(bullets, zombies, True)
+
+    if pygame.sprite.spritecollideany(player, zombies):
+        for spr in all_sprites:
+            spr.kill()
+        lose = TextObject('You lost!!', None, 100, 1, RED)
+        lose.add(all_sprites)
+        lose.draw(screen, (SCREEN_WIDTH/2 - 30, SCREEN_HEIGHT/2 + 50))
+        over = True
 
     all_sprites.update()
     all_sprites.draw(screen)

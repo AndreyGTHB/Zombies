@@ -1,6 +1,9 @@
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT) = (840, 680)
 FPS = 60
 
+# game time
+GAME_TIME = 10
+
 # colours
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
