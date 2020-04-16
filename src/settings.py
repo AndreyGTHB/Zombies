@@ -1,8 +1,11 @@
+import pygame
+
+
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT) = (840, 680)
 FPS = 60
 
 # game time
-GAME_TIME = 10
+GAME_TIME = 60
 
 # colours
 WHITE = (255, 255, 255)
@@ -12,10 +15,10 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 # imagines
-PLAYER_IMG = "../resources/player.png"
-BULLET_IMG = "../resources/bullet.png"
-ZOMBIE_IMG = "../resources/zomb.png"
-SHIP_IMG = "../resources/ev_ship.png"
+PLAYER_IMG = pygame.image.load("../resources/player.png")
+BULLET_IMG = pygame.image.load("../resources/bullet.png")
+ZOMBIE_IMG = pygame.image.load("../resources/zomb.png")
+SHIP_IMG = pygame.image.load("../resources/ev_ship.png")
 
 # constants
 PLAYER_SHOOT_INTERVAL = 450

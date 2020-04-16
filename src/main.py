@@ -57,10 +57,9 @@ def decrement_spawning_time():
     if over:
         return
 
-    if zombie_spawning_time > 0.5:
+    if zombie_spawning_time > 1.0:
         zombie_spawning_time -= 0.5
-    elif zombie_spawning_time > 0.4:
-        Zombie.speed = 3
+    elif zombie_spawning_time > 0.7:
         zombie_spawning_time -= 0.1
     else:
         return

@@ -7,7 +7,7 @@ from settings import *
 
 class Interacted:
     def rotate_to(self, x, y):
-        raise NotImplementedError("Method 'rotate_to' of interface 'Interacted' must be override.")
+        raise NotImplementedError("Method 'rotate_to' of 'Interacted' must be override.")
 
 
 class Player(pygame.sprite.Sprite, Interacted):
@@ -18,8 +18,8 @@ class Player(pygame.sprite.Sprite, Interacted):
         super(Player, self).__init__()
 
         self.center = position
-        self.original_image = pygame.image.load(img).convert_alpha()
-        self.image = pygame.transform.rotate(pygame.image.load(img), 90).convert_alpha()
+        self.original_image = img.convert_alpha()
+        self.image = pygame.transform.rotate(img, 90).convert_alpha()
         self.rect = self.image.get_rect(center=self.center)
 
         self.x, self.y = self.rect.center
@@ -84,7 +84,7 @@ class Bullet(pygame.sprite.Sprite):
 
         self.x, self.y = player.x, player.y
 
-        self.image = pygame.image.load(img).convert_alpha()
+        self.image = img.convert_alpha()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
@@ -114,7 +114,7 @@ class Zombie(pygame.sprite.Sprite, Interacted):
     def __init__(self, img, player, bullets):
         super(Zombie, self).__init__()
 
-        self.original_image = pygame.image.load(img).convert_alpha()
+        self.original_image = img.convert_alpha()
         self.image = self.original_image.copy()
 
         chance = randint(1, 4)
@@ -196,7 +196,7 @@ class EvacuationShip(pygame.sprite.Sprite, Interacted):
     def __init__(self, img, player, all_sprites):
         super(EvacuationShip, self).__init__(all_sprites)
 
-        self.original_image = pygame.image.load(img)
+        self.original_image = img.convert_alpha()
         self.image = self.original_image.copy()
         self.rect = self.image.get_rect()
 
